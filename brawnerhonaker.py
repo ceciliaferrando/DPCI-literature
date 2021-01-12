@@ -64,3 +64,14 @@ def construct_boot_ci(data, k, epsilon, range, alpha, alpha_prime):
     se_est = np.sqrt(var_est)
     z = stats.norm.ppf(1 - alpha / 2)
     return [mean_est - z * se_est, mean_est + z * se_est]
+
+def avg_cover_boot(reps, n, epsilon, alpha, range):
+  cov_vec = [None] * reps
+  moe_vec = [None] * reps
+  for i in range(1,reps + 1):
+      interval = construct_boot_ci(np.random.normal(loc=0, scale=1, size=n),
+                                   50, epsilon, range, alpha, alpha_prime = .05)
+      cov_vec[i] = 1 if interval[0] <= 0 <= interval[1] else 0
+      moe_vec[i] = interval[1] - interval[0]
+
+  return [np.nanmean(cov_vec), np.nanmean(moe_vec)]
