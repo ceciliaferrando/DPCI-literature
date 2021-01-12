@@ -46,13 +46,13 @@ def estimate_var(k_boot_means, alpha_prime, N, rho, range):
     return np.var(k_boot_means) - (sensitivity ** 2) / (2 * rho) * ((k * c_a_prime) / (k - 1) - 1)
 
 def epsilon_rho_equiv():
-    return {epsilons: [.01, .1, .2, .25, .5, .75, 1, 2],
-               rhos: [.000009, .0004, .0012, .0018, .0062, .013, .022, .075]}
+    return {'epsilons': [.01, .1, .2, .25, .5, .75, 1, 2],
+               'rhos': [.000009, .0004, .0012, .0018, .0062, .013, .022, .075]}
 
 
 def construct_boot_ci(data, k, epsilon, range, alpha, alpha_prime):
 
-    rho = epsilon_rho_equiv[rhos][epsilon_rho_equiv[epsilons] == epsilon]
+    rho = epsilon_rho_equiv['rhos'][epsilon_rho_equiv['epsilons'] == epsilon]
     N = length(data)
     boot_vec = [None] * k
 
@@ -66,12 +66,12 @@ def construct_boot_ci(data, k, epsilon, range, alpha, alpha_prime):
     return [mean_est - z * se_est, mean_est + z * se_est]
 
 def avg_cover_boot(reps, n, epsilon, alpha, range):
-  cov_vec = [None] * reps
-  moe_vec = [None] * reps
-  for i in range(1,reps + 1):
-      interval = construct_boot_ci(np.random.normal(loc=0, scale=1, size=n),
-                                   50, epsilon, range, alpha, alpha_prime = .05)
-      cov_vec[i] = 1 if interval[0] <= 0 <= interval[1] else 0
-      moe_vec[i] = interval[1] - interval[0]
+    cov_vec = [None] * reps
+    moe_vec = [None] * reps
+    for i in range(1, reps + 1):
+        interval = construct_boot_ci(np.random.normal(loc=0, scale=1, size=n),
+                                       50, epsilon, range, alpha, alpha_prime = .05)
+        cov_vec[i] = 1 if interval[0] <= 0 <= interval[1] else 0
+        moe_vec[i] = interval[1] - interval[0]
 
-  return [np.nanmean(cov_vec), np.nanmean(moe_vec)]
+    return [np.nanmean(cov_vec), np.nanmean(moe_vec)]

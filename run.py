@@ -1,9 +1,10 @@
 import numpy as np
 import argparse
 from karwavadhan import *
+from brawnerhonaker import *
 
 parser = argparse.ArgumentParser(description='DP CI reference algorithms')
-parser.add_argument('--alg', type=str, default='vadhan', help='vadhan or brawner or dorazio')
+parser.add_argument('--alg', type=str, default='brawnerhonaker', help='karwavadhan or brawnerhonaker or dorazioetal')
 parser.add_argument('--n', type=int, default=10000, help='number of data points')
 parser.add_argument('--e', type=float, default=0.1, help='privacy parameter epsilon')
 parser.add_argument('--r', type=float, default=32,
@@ -30,7 +31,7 @@ if __name__ == "__main__":
 
         db = np.random.normal(0, 1, n)
 
-        if alg == 'vadhan':
+        if alg == 'karwavadhan':
             stdmin, stdmax = 0.2, 5 #see original code
             xmin, xmax = -r, r
             ci = karwa_vadhan_ci(db, a, e, stdmin, stdmax, xmin, xmax)
@@ -38,6 +39,15 @@ if __name__ == "__main__":
                 is_true_param_covered[iter] = 1
             moe = (ci[1]-ci[0])/2
             moes[iter] = moe
+        elif alg == 'brawnerhonaker':
+            stdmin, stdmax = 0.2, 5  # see original code
+            xmin, xmax = -r, r
+            ci = construct_boot_ci(db, 50, e, 2*r, a, .05)
+            if ci[0] <= true_param <= ci[1]:
+                is_true_param_covered[iter] = 1
+            moe = (ci[1] - ci[0]) / 2
+            moes[iter] = moe
+
 
     print("mean MoE", np.mean(moes))
     print("coverage", np.mean(is_true_param_covered))
