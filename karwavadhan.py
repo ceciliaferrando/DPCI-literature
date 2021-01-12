@@ -1,4 +1,4 @@
-# Karwa Vadhan as implemented by Wu et al. (2020) in R
+# Karwa-Vadhan as implemented by Wu et al. (2020) in R
 # https://github.com/wxindu/dp-conf-int/blob/master/algorithms/replications/alg1_Vadhan.R
 
 import numpy as np
