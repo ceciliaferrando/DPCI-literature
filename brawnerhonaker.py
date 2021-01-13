@@ -14,7 +14,7 @@ def partition_bootstrap(data):
     #partitions = np.zeros((8,np.round(N/10)))
     partitions = []
     for i in range(8):
-        partitions.append(data[[draws == i]])
+        partitions.append(data[np.where(draws == i)])
     return partitions
 
 def define_p_i(i, N):
