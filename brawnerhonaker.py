@@ -10,10 +10,11 @@ def compute_epsilon(rho, delta = 1e-6):
 
 def partition_bootstrap(data):
     N = len(data)
-    draws = np.random.multinomial(N, [1/N]*N, size=1)
+    draws = np.random.multinomial(N, [1/N]*N)
+    #partitions = np.zeros((8,np.round(N/10)))
     partitions = []
     for i in range(8):
-        partitions[i] = data[draws == (i-1)]
+        partitions.append(data[[draws == i]])
     return partitions
 
 def define_p_i(i, N):
@@ -50,17 +51,17 @@ def epsilon_rho_equiv():
                'rhos': [.000009, .0004, .0012, .0018, .0062, .013, .022, .075]}
 
 
-def construct_boot_ci(data, k, epsilon, range, alpha, alpha_prime):
-
-    rho = epsilon_rho_equiv['rhos'][epsilon_rho_equiv['epsilons'] == epsilon]
-    N = length(data)
+def construct_boot_ci(data, k, epsilon, datarange, alpha, alpha_prime):
+    rho_tmp = epsilon_rho_equiv()
+    rho = rho_tmp['rhos'][rho_tmp['epsilons'].index(epsilon)]
+    N = len(data)
     boot_vec = [None] * k
-
+    print(k)
     for i in range(1, k+1):
-        boot_vec[i-1] = bootstrap_priv_mean(data, rho / k, range)
+        boot_vec[i-1] = bootstrap_priv_mean(data, rho / k, datarange)
 
     mean_est = np.mean(boot_vec)
-    var_est = np.max(0, estimate_var(boot_vec, alpha_prime, N, rho, range))
+    var_est = np.max(0, estimate_var(boot_vec, alpha_prime, N, rho, datarange))
     se_est = np.sqrt(var_est)
     z = stats.norm.ppf(1 - alpha / 2)
     return [mean_est - z * se_est, mean_est + z * se_est]

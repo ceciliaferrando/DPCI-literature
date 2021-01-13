@@ -5,12 +5,12 @@ from brawnerhonaker import *
 
 parser = argparse.ArgumentParser(description='DP CI reference algorithms')
 parser.add_argument('--alg', type=str, default='brawnerhonaker', help='karwavadhan or brawnerhonaker or dorazioetal')
-parser.add_argument('--n', type=int, default=10000, help='number of data points')
+parser.add_argument('--n', type=int, default=1000, help='number of data points')
 parser.add_argument('--e', type=float, default=0.1, help='privacy parameter epsilon')
 parser.add_argument('--r', type=float, default=32,
                     help="Upper bound of the data range. Range symmetric with respect to 0. Lowerbound set to minus this")
 parser.add_argument('--a', type=float, default=0.05, help='significance level')
-parser.add_argument('--iters', type=int, default=1000, help='number of iterations for computing CI coverage')
+parser.add_argument('--iters', type=int, default=500, help='number of iterations for computing CI coverage')
 parser.add_argument('--center', type=float, default=0.0, help='significance level')
 args = parser.parse_args()
 
