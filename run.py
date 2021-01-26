@@ -4,7 +4,7 @@ from karwavadhan import *
 from brawnerhonaker import *
 
 parser = argparse.ArgumentParser(description='DP CI reference algorithms')
-parser.add_argument('--alg', type=str, default='brawnerhonaker', help='karwavadhan or brawnerhonaker or dorazioetal')
+parser.add_argument('--alg', type=str, default='karwavadhan', help='karwavadhan or brawnerhonaker or dorazioetal')
 parser.add_argument('--n', type=int, default=1000, help='number of data points')
 parser.add_argument('--e', type=float, default=0.1, help='privacy parameter epsilon')
 parser.add_argument('--r', type=float, default=32,
